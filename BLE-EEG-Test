@@ -1,0 +1,30 @@
+import asyncio
+from bleak import BleakClient
+
+# UUIDs for EEG service and characteristic
+
+EEG_SERVICE_UUID = "Place_Holder_UUID"
+EEG_CHARACTERISTIC_UUID = "Place_Holder_UUID"
+#Replace the placeholders with the correctr values for device.
+
+async def connect_and_subscribe(device_address):
+    async with BleakClient(device_address) as client:
+        await client.connect()
+        eeg_data = await client.read_gatt_char(EEG_CHARACTERISTIC_UUID)
+        return eeg_data
+
+async def main():
+    device_address = "XX:XX:XX:XX:XX:XX"  # Replace with your device's MAC address
+    while True:
+        try:
+            eeg_data = await connect_and_subscribe(device_address)
+            print("EEG data:", eeg_data)
+        except Exception as e:
+            print("Error:", e)
+        await asyncio.sleep(5)  # Delay for 5 seconds
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+#Michael Adrien
+#02/07/2024
